@@ -1,25 +1,46 @@
 package com.kingsly.robotapocalypse.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.*;
-import java.util.Set;
 
+import java.util.List;
+
+@NoArgsConstructor
+// @RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 public class Survivor {
     @Id
-    private long id;
+    @NonNull
+    private Long id;
+    @NonNull
     private String name;
+    @NonNull
     private String surname;
-    private int age;
+    @NonNull
+    private Integer age;
+    @NonNull
     private Gender gender;
     @Embedded
+    @NonNull
     private LocationCoordinates lastLocation;
-    private int infectionReports;
-    private boolean isInfected;
-    @OneToMany(mappedBy = "survivor")
-    private Set<Resource> resourses;
+    @NonNull
+    private Integer infectionReports;
+    @NonNull
+    private Boolean isInfected;
+    @OneToMany(mappedBy = "survivor", cascade = CascadeType.ALL)
+    private List<Resource> resourses;
+
+    // public Survivor(Long id, String name, String surname, Integer age, Gender
+    // gender, LocationCoordinates lastLocation,
+    // Integer infectionReports, Boolean isInfected){
+    // this.id = id;
+    // this.name = name;
+    // //Other fields
+    // }
 }
