@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +30,9 @@ public class SurvivorController {
     private SurvivorRepository repo;
 
     @GetMapping
-    public ResponseEntity<List<Survivor>> getSurvivors() {
-        return ResponseEntity.ok(repo.findAll());
+    public ResponseEntity<List<Survivor>> getSurvivors(
+            @PageableDefault(size = 10, direction = Direction.ASC, sort = "name") Pageable pg) {
+        return ResponseEntity.ok(repo.findAll(pg).toList());
     }
 
     @PostMapping
@@ -77,5 +81,35 @@ public class SurvivorController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/percentage/infected")
+    public ResponseEntity<Double> getInfectedPercentage() {
+        List<Survivor> survivors = repo.findAll();
+        List<Survivor> infectedSurvivors = survivors.stream().filter(s -> s.getIsInfected().equals(true)).toList();
+        double percentage = (infectedSurvivors.size() / survivors.size()) * 100;
+        return ResponseEntity.ok(percentage);
+    }
+
+    @GetMapping("/percentage/non-infected")
+    public ResponseEntity<Double> getNonInfectedPercentage() {
+        List<Survivor> survivors = repo.findAll();
+        List<Survivor> nonInfectedSurvivors = survivors.stream().filter(s -> s.getIsInfected().equals(false)).toList();
+        double percentage = (nonInfectedSurvivors.size() / survivors.size()) * 100;
+        return ResponseEntity.ok(percentage);
+    }
+
+    @GetMapping("/infected")
+    public ResponseEntity<List<Survivor>> getInfectedSurvivors() {
+        List<Survivor> survivors = repo.findAll();
+        List<Survivor> infectedSurvivors = survivors.stream().filter(s -> s.getIsInfected().equals(true)).toList();
+        return ResponseEntity.ok(infectedSurvivors);
+    }
+
+    @GetMapping("/non-infected")
+    public ResponseEntity<List<Survivor>> getNonInfectedSurvivors() {
+        List<Survivor> survivors = repo.findAll();
+        List<Survivor> nonInfectedSurvivors = survivors.stream().filter(s -> s.getIsInfected().equals(false)).toList();
+        return ResponseEntity.ok(nonInfectedSurvivors);
     }
 }

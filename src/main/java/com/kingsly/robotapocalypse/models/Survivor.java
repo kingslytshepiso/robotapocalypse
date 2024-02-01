@@ -36,6 +36,7 @@ public class Survivor {
     private Integer infectionReports;
     @NonNull
     private Boolean isInfected;
+    @ToString.Exclude
     @OneToMany(mappedBy = "survivor", cascade = CascadeType.ALL)
     private List<Resource> resources;
 

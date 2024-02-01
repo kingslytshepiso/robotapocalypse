@@ -1,7 +1,5 @@
 package com.kingsly.robotapocalypse.models;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,12 +9,13 @@ import lombok.NonNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Robot {
+
     @NonNull
-    private String modelNumber;
+    private String model;
     @NonNull
     private String serialNumber;
     @NonNull
-    private LocalDateTime manufaturedDate;
+    private String manufaturedDate;
     @NonNull
     private String category;
 }

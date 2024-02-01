@@ -193,4 +193,42 @@ public class SurvivorControllerTests {
         assumeTrue(getResponse.getBody().getInfectionReports() >= 3);
         assertThat(getResponse.getBody().getIsInfected()).isTrue();
     }
+
+    @Test
+    @DisplayName("Test the request to get the percentage of infected survivors")
+    void getThePercentageOfInfectedSurvivorsTest() {
+        ResponseEntity<Double> getInfectedPercentage = restTemplate.getForEntity(baseUrl + "/percentage/infected",
+                Double.class);
+        assertThat(getInfectedPercentage.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(getInfectedPercentage.getBody()).isInstanceOf(Double.class);
+        assumeTrue(getInfectedPercentage.getStatusCode().equals(HttpStatus.OK));
+        ResponseEntity<Survivor[]> getAllResponse = restTemplate.getForEntity(baseUrl, Survivor[].class);
+        List<Survivor> survivors = new ArrayList<>();
+        for (Survivor o : getAllResponse.getBody()) {
+            survivors.add(o);
+        }
+        assertThat(survivors.size()).isEqualTo(getAllResponse.getBody().length);
+        List<Survivor> infectedSurvivors = survivors.stream().filter(s -> s.getIsInfected().equals(true)).toList();
+        double expectedPercentage = (infectedSurvivors.size() / survivors.size()) * 100;
+        assertThat(expectedPercentage).isEqualTo(getInfectedPercentage.getBody());
+    }
+
+    @Test
+    @DisplayName("Test the request to get the percentage of non-infected survivors")
+    void getThePercentageOfNonInfectedSurvivorsTest() {
+        ResponseEntity<Double> getNonInfectedResponse = restTemplate.getForEntity(baseUrl + "/percentage/non-infected",
+                Double.class);
+        assertThat(getNonInfectedResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(getNonInfectedResponse.getBody()).isInstanceOf(Double.class);
+        assumeTrue(getNonInfectedResponse.getStatusCode().equals(HttpStatus.OK));
+        ResponseEntity<Survivor[]> getAllResponse = restTemplate.getForEntity(baseUrl, Survivor[].class);
+        List<Survivor> survivors = new ArrayList<>();
+        for (Survivor o : getAllResponse.getBody()) {
+            survivors.add(o);
+        }
+        assertThat(survivors.size()).isEqualTo(getAllResponse.getBody().length);
+        List<Survivor> nonInfectedSurvivors = survivors.stream().filter(s -> s.getIsInfected().equals(false)).toList();
+        double expectedPercentage = (nonInfectedSurvivors.size() / survivors.size()) * 100;
+        assertThat(expectedPercentage).isEqualTo(getNonInfectedResponse.getBody());
+    }
 }

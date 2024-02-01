@@ -7,5 +7,4 @@ import com.kingsly.robotapocalypse.models.Survivor;
 
 @Repository
 public interface SurvivorRepository extends JpaRepository<Survivor, Long> {
-
 }
