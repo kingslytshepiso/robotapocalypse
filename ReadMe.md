@@ -59,5 +59,14 @@ tests that were used during development to verify the required functionality and
 
      -WOULD RETURN a http status code of 404 if the the specified survivor id does not exist
 
-  6. 
+  6. PUT /survivors/flag/{survivor id} : The endpoint to flag a survivor as infected
+
+     -EXPECTS a survivor id to specify the survivor to flag
+
+     -RETURNS a http status code of 201 to indicate a successful flag process
+
+  7. GET /survivors/percentage/infected : The endpoint to get the percentage of infected survivors
+  7. GET /survivors/percentage/non-infected : The endpoint to get the percentage of non-infected survivors
+  7. GET /survivors/infected : The endpoint to get a list infected survivors
+  7. GET /survivors/non-infected : The endpoint to get a list non-infected survivors
        
