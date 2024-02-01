@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.kingsly.robotapocalypse.repositories.SurvivorRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -48,7 +50,7 @@ public class SurvivorControllerTests {
                 28,
                 Gender.MALE,
                 new LocationCoordinates(71.33F, 33.44F),
-                2,
+                0,
                 false,
                 new ArrayList<>()));
         availableSurvivors = repo.saveAll(survivors);
@@ -114,7 +116,7 @@ public class SurvivorControllerTests {
         resources.add(new Resource(null, "Water", "Food", new Quantity(3d, "litres"), null));
         resources.add(new Resource(null, "Pain Killers", "Medicine", new Quantity(1d, "kilograms"), null));
         Survivor toAdd = new Survivor(
-                102l,
+                103l,
                 "Jane",
                 "Doe",
                 31,
@@ -123,7 +125,7 @@ public class SurvivorControllerTests {
                 0,
                 false,
                 null);
-        toAdd.setResourses(resources);
+        toAdd.setResources(resources);
         ResponseEntity<Void> postResponse = restTemplate.postForEntity(baseUrl, toAdd, Void.class);
         assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
@@ -144,5 +146,51 @@ public class SurvivorControllerTests {
         ResponseEntity<Void> updateResponse = restTemplate
                 .exchange(URI.create(updateUri), HttpMethod.PUT, null, Void.class);
         assertThat(updateResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    @DisplayName("Test the request to flag/report a survivor infection using a non-existent id")
+    void flagRequestWithANonExistentSurvivorTest() {
+        String flagUrl = baseUrl + "/flag/500";
+        ResponseEntity<Void> response = restTemplate
+                .exchange(flagUrl, HttpMethod.PUT, null, Void.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("Test the request to flag/report a survivor infection with a success expected outcome")
+    void flagSurvivorRequestTest() {
+
+        ResponseEntity<Survivor> getInitResponse = restTemplate
+                .getForEntity(baseUrl + "/101", Survivor.class);
+        assertThat(getInitResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assumeFalse(getInitResponse.getBody() == null);
+        Integer initialReports = getInitResponse.getBody().getInfectionReports();
+
+        String flagUrl = baseUrl + "/flag/101";
+        ResponseEntity<Void> flagResponse = restTemplate
+                .exchange(flagUrl, HttpMethod.PUT, null, Void.class);
+        assertThat(flagResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+        ResponseEntity<Survivor> getFinalResponse = restTemplate
+                .getForEntity(baseUrl + "/101", Survivor.class);
+        assumeTrue(getFinalResponse.getStatusCode().equals(HttpStatus.OK));
+        assertThat(getFinalResponse.getBody().getInfectionReports()).isGreaterThan(initialReports);
+    }
+
+    @Test
+    @RepeatedTest(3)
+    @DisplayName("Test the request to flag/report a survivor three times to verify the infection status change")
+    void flagSurvivorRepeatedToVerifyInfectionStatusChangeTest() {
+        String flagUrl = baseUrl + "/flag/102";
+        ResponseEntity<Void> flagResponse = restTemplate
+                .exchange(flagUrl, HttpMethod.PUT, null, Void.class);
+        assertThat(flagResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+        ResponseEntity<Survivor> getResponse = restTemplate
+                .getForEntity(baseUrl + "/102", Survivor.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assumeTrue(getResponse.getBody().getInfectionReports() >= 3);
+        assertThat(getResponse.getBody().getIsInfected()).isTrue();
     }
 }

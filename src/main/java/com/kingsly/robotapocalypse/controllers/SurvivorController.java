@@ -64,4 +64,18 @@ public class SurvivorController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/flag/{id}")
+    public ResponseEntity<Void> flagSurvivor(@PathVariable long id) {
+        Optional<Survivor> survivorOptional = repo.findById(id);
+        if (survivorOptional.isPresent()) {
+            Survivor survivor = survivorOptional.get();
+            Integer currentReports = survivor.getInfectionReports() + 1;
+            survivor.setIsInfected(currentReports >= 3);
+            survivor.setInfectionReports(currentReports);
+            repo.save(survivor);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

@@ -3,6 +3,8 @@ package com.kingsly.robotapocalypse.models;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -25,6 +27,7 @@ public class Survivor {
     @NonNull
     private Integer age;
     @NonNull
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @Embedded
     @NonNull
@@ -34,7 +37,14 @@ public class Survivor {
     @NonNull
     private Boolean isInfected;
     @OneToMany(mappedBy = "survivor", cascade = CascadeType.ALL)
-    private List<Resource> resourses;
+    private List<Resource> resources;
+
+    public void setResources(List<Resource> resources) {
+        for (Resource res : resources) {
+            res.setSurvivor(this);
+        }
+        this.resources = resources;
+    }
 
     // public Survivor(Long id, String name, String surname, Integer age, Gender
     // gender, LocationCoordinates lastLocation,
