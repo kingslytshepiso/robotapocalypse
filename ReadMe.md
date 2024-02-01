@@ -10,7 +10,7 @@ are able to flag other survivors incase they suspect or confirm an infection. Th
 specify their resources, not limiting them with the kind of resources they can have. The source code also includes JUnit 5
 tests that were used during development to verify the required functionality and pass the acceptance citerias.
 
-## Instruction:
+## Instructions:
   1. Pull or clone the project to your IDE
   1. Allow your respective IDE to finish importing the required dependencies
   1. No extra steps are required to setup the application database
@@ -23,7 +23,7 @@ tests that were used during development to verify the required functionality and
      removed when the application stops running.
   1. After all, build and run the project
 
-## Endpoints
+## Endpoints:
   1. GET /survivors : The endpoint to get all the available survivors from the database.
        
        -RETURNS a http status code of 200 with the list of survivors
