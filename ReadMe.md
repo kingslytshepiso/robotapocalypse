@@ -3,7 +3,8 @@
 
 ### @Author Kingsly Mokgwathi
 
-**Project Description**
+## Project Description
+
 The Robot Apocalypse application encompasses the APIs to cater for survivors during the crisis of a robot zombie outbreak.
 The application provides survivors with the resources to manage and organise resources during the outbreak. Survivors 
 are able to flag other survivors incase they suspect or confirm an infection. The inventory for a survivor allows to 
