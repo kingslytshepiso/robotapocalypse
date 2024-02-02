@@ -87,7 +87,9 @@ public class SurvivorController {
     public ResponseEntity<Double> getInfectedPercentage() {
         List<Survivor> survivors = repo.findAll();
         List<Survivor> infectedSurvivors = survivors.stream().filter(s -> s.getIsInfected().equals(true)).toList();
-        double percentage = (infectedSurvivors.size() / survivors.size()) * 100;
+        double survivorCount = survivors.size();
+        double infectedCount = infectedSurvivors.size();
+        double percentage = infectedCount / survivorCount * 100;
         return ResponseEntity.ok(percentage);
     }
 
@@ -95,7 +97,9 @@ public class SurvivorController {
     public ResponseEntity<Double> getNonInfectedPercentage() {
         List<Survivor> survivors = repo.findAll();
         List<Survivor> nonInfectedSurvivors = survivors.stream().filter(s -> s.getIsInfected().equals(false)).toList();
-        double percentage = (nonInfectedSurvivors.size() / survivors.size()) * 100;
+        double survivorCount = survivors.size();
+        double nonInfectedCount = nonInfectedSurvivors.size();
+        double percentage = nonInfectedCount / survivorCount * 100;
         return ResponseEntity.ok(percentage);
     }
 
