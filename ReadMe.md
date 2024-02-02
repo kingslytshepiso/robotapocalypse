@@ -34,44 +34,34 @@ The project is built using the Java Spring boot Framework with Maven
 ### Endpoints
   1. GET /survivors : The endpoint to get all the available survivors from the database.
        
-       -RETURNS a http status code of 200 with the list of survivors
+       - RETURNS a http status code of 200 with the list of survivors
      
   3. POST /survivors : The endpoint to post a survivor into the database.
        
-       -EXPECTS a survivor object with the required values
+       - EXPECTS a survivor object with the required values
      
-       -RETURNS a http status code of 201 to indicate a successfull insertion and a location to the newly created
-         item
+       - RETURNS a http status code of 201 to indicate a successfull insertion and a location to the newly created item
        
-       -WOULD RETURN a http status code of 409(Conflict) if a surivivor with the same ID already exists in the
-         database
+       - WOULD RETURN a http status code of 409(Conflict) if a surivivor with the same ID already exists in the database
   4. GET /survivors/{survivor id} : The endpoint to get a specific survivor using their ID stored in the database
 
-     -EXPECTS a survivor id used to search through the database
+     - EXPECTS a survivor id used to search through the database
 
-     -RETURNS a status code of 200 with survivor object if it is found, and a status code of 404(Not found) for
+     - RETURNS a status code of 200 with survivor object if it is found, and a status code of 404(Not found) for when the survivor does not exist
 
-     when the survivor does not exist
+  5. PUT /survivors/{survivor id}/lati-{latitude}:long-{longitude} : The endpoint to update the last location of a survivor.
 
-  5. PUT /survivors/{survivor id}/lati-{latitude}:long-{longitude} : The endpoint to update the last location of a
+     - EXPECTS longitude and latitude values of which will be used to update the specified user according to the survivor id supplied.
 
-     a survivor.
+     - RETURNS a status code of 204(No content) to indicate that the request processed successfully and no further action is rquired
 
-     -EXPECTS longitude and latitude values of which will be used to update the specified user according to the
-
-     survivor id supplied.
-
-     -RETURNS a status code of 204(No content) to indicate that the request processed successfully and no further
-
-     action is rquired
-
-     -WOULD RETURN a http status code of 404 if the the specified survivor id does not exist
+     - WOULD RETURN a http status code of 404 if the the specified survivor id does not exist
 
   6. PUT /survivors/flag/{survivor id} : The endpoint to flag a survivor as infected
 
-     -EXPECTS a survivor id to specify the survivor to flag
+     - EXPECTS a survivor id to specify the survivor to flag
 
-     -RETURNS a http status code of 201 to indicate a successful flag process
+     - RETURNS a http status code of 201 to indicate a successful flag process
 
   7. GET /survivors/percentage/infected : The endpoint to get the percentage of infected survivors
   7. GET /survivors/percentage/non-infected : The endpoint to get the percentage of non-infected survivors
