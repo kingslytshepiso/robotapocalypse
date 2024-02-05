@@ -65,6 +65,7 @@ The project is built using the Java Spring boot Framework with Maven
 
   7. GET /survivors/percentage/infected : The endpoint to get the percentage of infected survivors
   7. GET /survivors/percentage/non-infected : The endpoint to get the percentage of non-infected survivors
-  7. GET /survivors/infected : The endpoint to get a list infected survivors
-  7. GET /survivors/non-infected : The endpoint to get a list non-infected survivors
+  7. GET /survivors/infected : The endpoint to get a list of infected survivors
+  7. GET /survivors/non-infected : The endpoint to get a list of non-infected survivors
+  8. GET /robots : The endpoint to get a list of robots from the robot system.
        
