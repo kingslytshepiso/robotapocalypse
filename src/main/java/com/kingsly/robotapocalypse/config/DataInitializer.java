@@ -17,6 +17,7 @@ import com.kingsly.robotapocalypse.models.Survivor;
 import com.kingsly.robotapocalypse.repositories.SurvivorRepository;
 
 @Configuration
+@SuppressWarnings("null")
 public class DataInitializer implements ApplicationRunner {
         @Autowired
         private SurvivorRepository repo;

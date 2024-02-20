@@ -25,6 +25,7 @@ import com.kingsly.robotapocalypse.repositories.SurvivorRepository;
 
 @RestController
 @RequestMapping("/survivors")
+@SuppressWarnings("null")
 public class SurvivorController {
     @Autowired
     private SurvivorRepository repo;

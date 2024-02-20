@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SuppressWarnings("null")
 public class SurvivorControllerTests {
 
     @Autowired

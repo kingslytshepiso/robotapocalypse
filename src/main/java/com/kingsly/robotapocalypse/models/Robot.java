@@ -15,7 +15,7 @@ public class Robot {
     @NonNull
     private String serialNumber;
     @NonNull
-    private String manufaturedDate;
+    private String manufacturedDate;
     @NonNull
     private String category;
 }
